@@ -12,12 +12,33 @@ import textwrap
 
 # Server class
 class MyServer(BaseHTTPRequestHandler):
+
+    def do_POST(self):
+
+        print("Received POST")
+
+        filename = os.path.basename(self.path)
+        file_length = int(self.headers['Content-Length'])
+
+        with open(filename, 'wb') as output_file:
+            output_file.write(self.rfile.read(file_length))
+
+        self.send_response(200)
+        self.send_header('Content-type', 'image/png')
+        self.end_headers()
+        
+        self.wfile.write('Image saved','utf-8')
+
+
     def do_GET(self):
 
         match self.path:
             case '/':
                 homepage(self)
-            case '/api/get-image':
+            case '/api/get-image1':
+                print('Get image')
+                getImage(self)
+            case '/api/get-image2':
                 print('Get image')
                 getImage(self)
             case '/api/get-quote':
@@ -67,7 +88,7 @@ def getQuote(self):
     currentQuote = random_quote
 
     # Send the random quote
-    self.wfile.write(bytes(str(random_quote), "utf-8"))
+    self.wfile.write(bytes(str(random_quote).replace("'", "\""), "utf-8"))
     
 # Get Final
 def getFinal(self, dark, fancy):
@@ -80,7 +101,7 @@ def getFinal(self, dark, fancy):
     print("Params: dark=" + str(dark) + ", fancy=" + str(fancy))
 
     self.send_response(200)
-    self.send_header("Content-type", "image/jpeg")
+    self.send_header("Content-type", "image/png")
     self.end_headers()
 
     # Open an Image
@@ -177,7 +198,7 @@ quotes_list = getAllQuotes()
 currentQuote = random.choice(quotes_list)
 
 hostname = "localhost"
-port = 8080
+port = 8000
 
 if __name__ == "__main__":        
     webServer = HTTPServer((hostname, port), MyServer)
