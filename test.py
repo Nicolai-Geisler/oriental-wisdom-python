@@ -35,7 +35,7 @@ def getRandomImage():
 
 def createSharepic(dark, fancy):
     # Open an Image
-    img = Image.open(currentImage)
+    img = Image.open("images/" + currentImage)
     
     # Get quote and author
     quote = currentQuote["quote"]
@@ -44,12 +44,12 @@ def createSharepic(dark, fancy):
     # Set font and size
     font_path = "./fonts/Roboto-Regular.ttf"
     font_size = 70
-    if str(fancy) == "True":
+    if str(fancy) == "true":
         font_path = "./fonts/Fancy.ttf"
         font_size = 75
     
     font_color = 255
-    if str(dark) == "True":
+    if str(dark) == "false":
         font_color = 0
 
     font = ImageFont.truetype(font_path, font_size)
@@ -64,7 +64,7 @@ def createSharepic(dark, fancy):
     x, y = img.width / 2, (img.height - sum(font_size for line in lines)) // 3 # img.height / 3
 
     # Create a new transparent image with the same size as the original
-    if str(dark) == "True":
+    if str(dark) == "false":
         txt_img = Image.new('RGBA', img.size, (255, 255, 255, 50))
     else:
         txt_img = Image.new('RGBA', img.size, (0, 0, 0, 100))
