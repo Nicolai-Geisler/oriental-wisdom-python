@@ -42,7 +42,7 @@ def getRandomImage():
     while currentImage == picture:
         picture = random.choice(pictures)
     
-    currentImage = picture
+    currentImage = directory + picture
 
     return directory + picture
 
@@ -55,11 +55,11 @@ def createSharepic(dark, fancy):
     author = currentQuote["author"]
 
     # Set font and size
-    font_path = "./fonts/Roboto-Regular.ttf"
-    font_size = 80
+    font_path = "./fonts/Roboto-Bold.ttf"
+    font_size = 90
     if str(fancy) == "true":
         font_path = "./fonts/Fancy.ttf"
-        font_size = 85
+        font_size = 100
     
     font_color = 255
     if str(dark) == "false":
@@ -68,7 +68,7 @@ def createSharepic(dark, fancy):
     font = ImageFont.truetype(font_path, font_size)
     
     # Set maximum width for each line
-    max_line_width = 20
+    max_line_width = 18
 
     # Wrap text into lines
     lines = textwrap.wrap(quote, width=max_line_width)
@@ -90,8 +90,10 @@ def createSharepic(dark, fancy):
         draw.text((x, y), line, fill=(font_color, font_color, font_color), font=font, anchor="mm", align="center")
         y += font_size  # Move down for the next line
     
-    font = ImageFont.truetype(font_path, 50)
-    draw.text((x * 0.9, y + font_size), '- ' + author, fill=(font_color, font_color, font_color), font=font)
+    if fancy == "false":
+        font_path = "./fonts/Roboto-Regular.ttf"
+    font = ImageFont.truetype(font_path, 60)
+    draw.text((x, y + (font_size * 0.5)), '   ' + author, fill=(font_color, font_color, font_color), font=font)
 
     # Combine the two images
     combined = Image.alpha_composite(img.convert("RGBA"), txt_img)
@@ -201,7 +203,7 @@ def send_sharepic():
         return str(e), 500
 
 # fetch images
-getUnsplashImages()
+#getUnsplashImages()
 
 # Global variables
 currentImage = ""
