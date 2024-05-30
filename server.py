@@ -203,7 +203,7 @@ def send_sharepic():
         return str(e), 500
 
 # fetch images
-#getUnsplashImages()
+getUnsplashImages()
 
 # Global variables
 currentImage = ""
