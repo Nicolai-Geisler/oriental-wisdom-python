@@ -1,7 +1,8 @@
 # Import Flask webserver
 from flask import Flask, request, send_file, json, render_template
 # Import utilities
-import urllib.request
+from urllib import request, parse
+import requests
 import random
 import time
 import os
@@ -15,11 +16,23 @@ app = Flask(__name__)
 
 # Functionality
 def getAllQuotes():
+
+    # Use fallback if no ollama quotes are available
+    directory = './quotes/ollama/'
+    if os.listdir('./quotes/ollama/') == []:
+        directory = './quotes/'
+
     # Open the JSON file
-    with open('./quotes/quotes.json', 'r') as f:
+    with open(directory + 'quotes.json', 'r') as f:
         data = json.load(f)
     # Return quotes in a list
     return data.get('quotes', [])
+
+    # Open the JSON file
+    #with open('./quotes/quotes.json', 'r') as f:
+    #    data = json.load(f)
+    # Return quotes in a list
+    #return data.get('quotes', [])
 
 def getRandomImage():
 
@@ -150,6 +163,65 @@ def serve_homepage():
 
 # API endpoints
 
+@app.route('/api/fetch-quotes')
+def fetch_quotes():
+    
+    print("Fetching quotes from ollama...")
+
+    # URL parameters for unsplash API
+    baseUrl = 'http://localhost:11434/api/generate'
+
+    # Body
+    data = {
+        "model": "oriental-wisdom", 
+        "prompt": "Generate a quote with a maximum of 15 words from an asian philosopher. Include the author. The JSON must only contain quote and author.", 
+        "format": "json", 
+        "stream": False
+    }
+
+    # Make POST request
+    res = requests.post(baseUrl, json=data)
+
+    data = res.json()
+
+    # Get actual response
+    response = data['response']
+
+    # The AI often uses Socrates for some reason
+    while str(response).find('Socrates') > 0 and str(response).find('"author":') > 0 :
+        res = requests.post(baseUrl, json=data)
+        data = res.json()
+        response = data['response']
+
+    # Read the existing JSON data from the file
+    with open('./quotes/ollama/quotes.json') as file:
+        existing_data = json.load(file)
+    
+    # Append the new data to the existing data
+    existing_data["quotes"].append(response)
+
+    # Write the updated data back to the file
+    with open('./quotes/ollama/quotes.json', 'w') as file:
+        json.dump(existing_data, file, indent=4)
+
+    with open('./quotes/ollama/quotes.json') as file:
+        json_data = json.load(file)
+    
+    # Remove jank from string
+    json_data = str(json_data).replace('\\n', '')
+    json_data = str(json_data).replace('\\', '')
+    json_data = str(json_data).replace('\'', '"')
+    json_data = str(json_data).replace('""','"')
+    json_data = str(json_data).replace('"{', '{')
+    json_data = str(json_data).replace('}"','}')
+
+    # Save to file
+    f = open("./quotes/ollama/quotes.json", "w")
+    f.write(str(json_data))
+    f.close()
+
+    return response, 200
+
 @app.route('/api/get-quote', methods=['GET'])
 def send_quote():
     print("Received GET QUOTE request")
@@ -203,7 +275,7 @@ def send_sharepic():
         return str(e), 500
 
 # fetch images
-getUnsplashImages()
+# getUnsplashImages()
 
 # Global variables
 currentImage = ""
