@@ -1,7 +1,7 @@
 # Import Flask webserver
-from flask import Flask, request, send_file, json, render_template
+from flask import Flask, send_file, json, render_template, request
 # Import utilities
-from urllib import request, parse
+# from urllib import request, parse
 import requests
 import random
 import time
@@ -70,12 +70,12 @@ def createSharepic(dark, fancy):
     # Set font and size
     font_path = "./fonts/Roboto-Bold.ttf"
     font_size = 90
-    if str(fancy) == "true":
+    if str(fancy).lower() == "true":
         font_path = "./fonts/Fancy.ttf"
         font_size = 100
     
     font_color = 255
-    if str(dark) == "false":
+    if str(dark).lower() == "false":
         font_color = 0
 
     font = ImageFont.truetype(font_path, font_size)
@@ -90,7 +90,7 @@ def createSharepic(dark, fancy):
     x, y = img.width / 2, (img.height - sum(font_size for line in lines)) // 3 # img.height / 3
 
     # Create a new transparent image with the same size as the original
-    if str(dark) == "false":
+    if str(dark).lower() == "false":
         txt_img = Image.new('RGBA', img.size, (255, 255, 255, 50))
     else:
         txt_img = Image.new('RGBA', img.size, (0, 0, 0, 100))
@@ -103,7 +103,7 @@ def createSharepic(dark, fancy):
         draw.text((x, y), line, fill=(font_color, font_color, font_color), font=font, anchor="mm", align="center")
         y += font_size  # Move down for the next line
     
-    if fancy == "false":
+    if str(fancy).lower() == "false":
         font_path = "./fonts/Roboto-Regular.ttf"
     font = ImageFont.truetype(font_path, 60)
     draw.text((x, y + (font_size * 0.5)), '   ' + author, fill=(font_color, font_color, font_color), font=font)
@@ -237,24 +237,13 @@ def send_quote():
 
     return response, 200
 
-@app.route('/api/get-image1', methods=['GET'])
+@app.route('/api/get-image', methods=['GET'])
 def send_image_one():
     print("Received GET request")
 
     file = getRandomImage()
     try:
         
-        return send_file(file, mimetype='image/jpeg')
-    except Exception as e:
-        return str(e), 500
-    
-@app.route('/api/get-image2', methods=['GET'])
-def send_image_two():
-    print("Received GET request")
-
-    file = getRandomImage()
-    try:
-
         return send_file(file, mimetype='image/jpeg')
     except Exception as e:
         return str(e), 500
@@ -275,7 +264,7 @@ def send_sharepic():
         return str(e), 500
 
 # fetch images
-getUnsplashImages()
+# getUnsplashImages()
 
 # Global variables
 currentImage = ""
