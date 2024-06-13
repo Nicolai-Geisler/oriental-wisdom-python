@@ -28,12 +28,6 @@ def getAllQuotes():
     # Return quotes in a list
     return data.get('quotes', [])
 
-    # Open the JSON file
-    #with open('./quotes/quotes.json', 'r') as f:
-    #    data = json.load(f)
-    # Return quotes in a list
-    #return data.get('quotes', [])
-
 def getRandomImage():
 
     # Use fallback if no unsplash images are available
