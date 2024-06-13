@@ -100,7 +100,7 @@ def createSharepic(dark, fancy):
     if str(fancy).lower() == "false":
         font_path = "./fonts/Roboto-Regular.ttf"
     font = ImageFont.truetype(font_path, 60)
-    draw.text((x, y + (font_size * 0.5)), '   ' + author, fill=(font_color, font_color, font_color), font=font)
+    draw.text((x, y + (font_size * 0.5)), ' ' + author, fill=(font_color, font_color, font_color), anchor="mm", align="center", font=font)
 
     # Combine the two images
     combined = Image.alpha_composite(img.convert("RGBA"), txt_img)
