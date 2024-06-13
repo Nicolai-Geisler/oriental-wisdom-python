@@ -162,8 +162,8 @@ def fetch_quotes():
     
     print("Fetching quotes from ollama...")
 
-    # URL parameters for unsplash API
-    baseUrl = 'http://localhost:11434/api/generate'
+    # URL parameters for Ollama API
+    baseUrl = 'http://ollama:11434/api/generate'
 
     # Body
     data = {
