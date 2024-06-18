@@ -1,6 +1,6 @@
 # Oriental Wisdom Python backend
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/2560px-Python_logo_and_wordmark.svg.png" alt="Python logo" style="height:200px;"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/2560px-Python_logo_and_wordmark.svg.png" alt="Python logo" style="height:150px;"/>
 
 ## Flask
 
@@ -16,8 +16,37 @@ Python Imaging Library (Pillow or PIL) is a free and open-source additional libr
 
 ### Get-image
 
+Returns a random image as a jpeg.
+
+**URL: .../api/get-image**
+
+The function will first search the **unsplash images** and only use the few standard images as a fallback.
+
 ### Get-quote
+
+**URL: .../api/get-quote**
+
+Returns a random quote in JSON format:
+
+```JSON
+{
+  "quote": "Some quote",
+  "author": "Some Author"
+}
+```
+
+The function will first search the **ollama quotes** and only use the few standard quotes as a fallback.
 
 ### Get-final
 
-### Fetch-quote
+**URL: .../api/get-final**
+
+Returns the final sharepic by adding the selected quote onto the selected image using **Pillow**.
+
+### Fetch-quotes
+
+**URL: .../api/fetch-quotes**
+
+Gets a quote from a local **Ollama** Container. The process takes a lot of time without a GPU.
+
+The quote is then stored in a JSON file.
