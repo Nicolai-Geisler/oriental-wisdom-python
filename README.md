@@ -1,6 +1,6 @@
 # Oriental Wisdom Python backend
 
-<img src="[drawing.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/2560px-Python_logo_and_wordmark.svg.png)" alt="Python logo" style="height:200px;"/>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/2560px-Python_logo_and_wordmark.svg.png" alt="Python logo" style="height:200px;"/>
 
 ## Flask
 
