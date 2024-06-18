@@ -16,9 +16,9 @@ Python Imaging Library (Pillow or PIL) is a free and open-source additional libr
 
 ### Get-image
 
-Returns a random image as a jpeg.
-
 **URL: .../api/get-image**
+
+Returns a random image as a jpeg.
 
 The function will first search the **unsplash images** and only use the few standard images as a fallback.
 
